@@ -1,0 +1,35 @@
+{
+  "name": "tasklistapp-be",
+  "type": "module",
+  "private": true,
+  "packageManager": "pnpm@9.9.0",
+  "scripts": {
+    "build": "nitro build",
+    "dev": "nitro dev",
+    "prepare": "nitro prepare",
+    "preview": "node .output/server/index.mjs",
+    "task-list": "nitro task list",
+    "migration:config": "tsx ./migrations/config.ts",
+    "migration:generate": "mini-pg-migrate generate",
+    "migration:up": "pnpm migration:config && mini-pg-migrate migrate:up /migrations/db.config.json /migrations/seeds",
+    "migration:down": "pnpm migration:config && mini-pg-migrate migrate:down /migrations/db.config.json /migrations/seeds"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.7",
+    "ioredis": "^5.4.2",
+    "pg": "^8.13.1",
+    "uuid": "^11.0.5",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.1.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/pg": "^8.11.11",
+    "eslint": "^9.19.0",
+    "eslint-plugin-format": "^1.0.1",
+    "mini-pg-migrate": "^0.0.6",
+    "nitropack": "latest",
+    "tsx": "^4.19.2"
+  }
+}
