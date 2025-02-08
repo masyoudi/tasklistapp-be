@@ -24,27 +24,21 @@ export default defineEventHandler({
         $description: raw.description,
         $dueDate: raw.due_date ?? null,
         $labelId: raw.label_id ?? null,
-        $createdAt: new Date().valueOf(),
-        $createdBy: event.context.session.user.id,
+        $updatedAt: new Date().valueOf(),
+        $userId: event.context.session.user.id,
+        $id: event.context.params.id,
       };
 
       await sql.query(
-        `INSERT INTO tasks (
-           title,
-           description,
-           due_date,
-           label_id,
-           created_at,
-           created_by
-         )
-         VALUES (
-           $title,
-           $description,
-           $dueDate,
-           $labelId,
-           $createdAt,
-           $createdBy
-         )
+        `UPDATE tasks
+           SET title    = $title,
+           description  = $description,
+           due_date     = $dueDate,
+           label_id     = $labelId,
+           updated_at   = $updatedAt,
+           updated_by   = $userId
+         WHERE id       = $id
+         AND created_by = $userId
         `,
         values,
       );
