@@ -48,12 +48,6 @@ function replaceKey(text: string, keys: string[]) {
 
   const filteredKeys = keys.filter(k => text.includes(k)).sort((a, b) => b.length - a.length);
 
-  if (filteredKeys.length === 1) {
-    const [key] = filteredKeys;
-
-    return `$${keys.findIndex(k => k === key) + 1}`;
-  }
-
   let result = text;
   filteredKeys.forEach((k) => {
     result = result.replace(k, `$${keys.findIndex(key => key === k) + 1}`);

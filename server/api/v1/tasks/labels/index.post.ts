@@ -5,7 +5,7 @@ import { sendErrorServer } from '~/utils/error';
 
 const schema = z.object({
   title: z.coerce.string().min(1, 'Please enter title'),
-  description: z.coerce.string().min(1, 'Please enter description'),
+  color: z.coerce.string().min(4, 'Invalid color').optional(),
 });
 
 export default defineEventHandler({
@@ -17,19 +17,24 @@ export default defineEventHandler({
       const sql = useSqlPool();
       const values = {
         $title: raw.title,
-        $description: raw.description,
-        $updatedAt: new Date().valueOf(),
-        $updatedBy: event.context.session.user.id,
-        $id: event.context.params.id,
+        $color: raw.color,
+        $createdAt: new Date().valueOf(),
+        $createdBy: event.context.session.user.id,
       };
 
       await sql.query(
-        `UPDATE tasks
-           SET title   = $title,
-           description = $description,
-           updated_at  = $updatedAt,
-           updated_by  = $updatedBy
-         WHERE id      = $id
+        `INSERT INTO task_labels (
+           title,
+           color,
+           created_at,
+           created_by
+         )
+         VALUES (
+           $title,
+           $color,
+           $createdAt,
+           $createdBy
+         )
         `,
         values,
       );
